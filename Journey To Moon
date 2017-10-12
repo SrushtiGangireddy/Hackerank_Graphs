@@ -1,0 +1,61 @@
+import java.io.*;
+import java.util.*;
+import java.math.*;
+
+public class Solution{
+    public static void main(String args[]){
+        Scanner sc = new Scanner(System.in);
+        
+        int num_v = sc.nextInt();
+        int num_e = sc.nextInt();
+        
+        List<List<Integer>> graph = new ArrayList<List<Integer>>();
+        
+        boolean visited[] = new boolean[num_v];
+        
+        for(int i=0;i<num_v;i++){
+            visited[i] = false;
+            graph.add(new LinkedList<Integer>());   
+        }
+        
+        while(num_e-- > 0){
+            int u = sc.nextInt();
+            int v = sc.nextInt();
+            
+            graph.get(v).add(u);
+            graph.get(u).add(v);
+            
+        }
+        
+        int rem = num_v;
+        int next = 0;
+        long answer = 0;
+        
+        while(rem > 0){
+            while(visited[next])
+                ++next;
+            visited[next] = true;
+            int curComp = 1;
+            --rem;
+            ArrayDeque<Integer> q = new ArrayDeque<Integer>();
+            q.offer(next);
+            while(!q.isEmpty()){
+                int cur = q.poll();
+                for(int adj:graph.get(cur)){
+                    if(!visited[adj]){
+                        ++curComp;
+                        --rem;
+                        visited[adj] = true;
+                        q.offer(adj);
+                    }
+                }
+            }
+            answer += (long)curComp*rem;
+        }
+        System.out.println(answer);
+        
+        
+        
+        
+    }
+}
