@@ -1,0 +1,35 @@
+#!/bin/python3
+
+import sys
+
+def dfs(node,adj,visited):
+    if visited[node]: return 0
+    visited[node] = 1
+    num = 1
+    for nextNode in adj[node]:
+        num += dfs(nextNode,adj,visited)
+    return num
+
+
+q = int(input().strip())
+for a0 in range(q):
+    n, m, x, y = input().strip().split(' ')
+    n, m, x, y = [int(n), int(m), int(x), int(y)]
+    adj = [[] for i in range(n+1)]
+    visited = [0] * (n+1)
+    for a1 in range(m):
+        city_1, city_2 = input().strip().split(' ')
+        city_1, city_2 = [int(city_1), int(city_2)]
+        adj[city_1].append(city_2)
+        adj[city_2].append(city_1)
+    
+    price = 0
+    for i in range(1,n+1):
+        if visited[i] > 0:
+            continue
+        numNodes = dfs(i,adj,visited)
+        price += min(numNodes*x,x+(numNodes-1)*y)
+    print(price)
+        
+    
+        
